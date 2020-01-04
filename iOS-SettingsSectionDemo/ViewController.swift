@@ -11,16 +11,21 @@ import UIKit
 class ViewController: UIViewController {
     
     private var settingItems: [[String: Any]]? = [
-        ["SettingName": "Display",
-         "SettingOptions": ["English", "French", "Romanian", "Russian"]],
+        ["SettingName": "Display Language",
+         "SettingOptions": ["English", "French", "Romanian", "Russian"],
+         "SelectedOption": "English"],
         ["SettingName": "Profile Visibility",
-         "SettingOptions": ["Private", "Public"]],
+         "SettingOptions": ["Private", "Public"],
+         "SelectedOption": "Private"],
         ["SettingName": "Receive Notifications",
-         "SettingOptions": ["Yes", "No"]],
+         "SettingOptions": ["Yes", "No"],
+         "SelectedOption": "No"],
         ["SettingName": "Share Location",
-         "SettingOptions": ["Yes", "No"]],
+         "SettingOptions": ["Yes", "No"],
+         "SelectedOption": "No"],
         ["SettingName": "Information Pages",
-         "SettingOptions": ["Terms and Conditions", "Privacy Policy"]]
+         "SettingOptions": ["Terms and Conditions", "Privacy Policy"],
+         "HasDisclosureIndicator": true]
     ]
     
     private var settingsTableView: UITableView!
@@ -70,9 +75,20 @@ extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
         cell.selectionStyle = .none
+        cell.accessoryType = .none
         if let settingItem = settingItems?[indexPath.section],
             let settingOptions = settingItem["SettingOptions"] as? [String] {
             cell.textLabel?.text = settingOptions[indexPath.row]
+            // Verify if current Section can contain a Checkmarked row
+            if let selectedOption = settingItem["SelectedOption"] as? String {
+                if settingOptions.firstIndex(of: selectedOption) == indexPath.row {
+                    cell.accessoryType = .checkmark
+                }
+            }
+            // Verify if current Section should display Disclosure Indicator icons on its rows
+            else if settingItem["HasDisclosureIndicator"] as? Bool ?? false {
+                cell.accessoryType = .disclosureIndicator
+            }
         }
         return cell
     }
