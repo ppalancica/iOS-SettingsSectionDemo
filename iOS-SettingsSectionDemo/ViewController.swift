@@ -6,29 +6,21 @@
 //  Copyright © 2020 I Dev TV. All rights reserved.
 //
 
-//
-//  ViewController.swift
-//  iOS-SettingsSectionDemo
-//
-//  Created by Pavel Palancica on 1/2/20.
-//  Copyright © 2020 I Dev TV. All rights reserved.
-//
-
 import UIKit
 
 class ViewController: UIViewController {
     
-    private var settingItems = [
-        "Setting 0",
-        "Setting 1",
-        "Setting 2",
-        "Setting 3",
-        "Setting 4",
-        "Setting 5",
-        "Setting 6",
-        "Setting 7",
-        "Setting 8",
-        "Setting 9"
+    private var settingItems: [[String: Any]]? = [
+        ["SettingName": "Display",
+         "SettingOptions": ["English", "French", "Romanian", "Russian"]],
+        ["SettingName": "Profile Visibility",
+         "SettingOptions": ["Private", "Public"]],
+        ["SettingName": "Receive Notifications",
+         "SettingOptions": ["Yes", "No"]],
+        ["SettingName": "Share Location",
+         "SettingOptions": ["Yes", "No"]],
+        ["SettingName": "Information Pages",
+         "SettingOptions": ["Terms and Conditions", "Privacy Policy"]]
     ]
     
     private var settingsTableView: UITableView!
@@ -41,9 +33,10 @@ class ViewController: UIViewController {
     }
     
     private func createViewsHierarchy() {
-        settingsTableView = UITableView(frame: .zero, style: .plain)
+        settingsTableView = UITableView(frame: .zero, style: .grouped)
         settingsTableView.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
         settingsTableView.dataSource = self
+        settingsTableView.delegate = self
         view.addSubview(settingsTableView)
     }
     
@@ -62,14 +55,35 @@ class ViewController: UIViewController {
 
 extension ViewController: UITableViewDataSource {
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return settingItems?.count ?? 0
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return settingItems.count
+        if let settingItem = settingItems?[section],
+            let settingOptions = settingItem["SettingOptions"] as? [String] {
+            return settingOptions.count
+        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
         cell.selectionStyle = .none
-        cell.textLabel?.text = settingItems[indexPath.row]
+        if let settingItem = settingItems?[indexPath.section],
+            let settingOptions = settingItem["SettingOptions"] as? [String] {
+            cell.textLabel?.text = settingOptions[indexPath.row]
+        }
         return cell
+    }
+}
+
+extension ViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if let settingItem = settingItems?[section],
+            let settingName = settingItem["SettingName"] as? String {
+            return settingName
+        }
+        return nil
     }
 }
