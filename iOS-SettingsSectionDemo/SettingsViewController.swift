@@ -10,23 +10,7 @@ import UIKit
 
 class SettingsViewController: UIViewController {
     
-    private var settingItems: [[String: Any]]? = [
-        ["SettingName": "Display Language",
-         "SettingOptions": ["English", "French", "Romanian", "Russian"],
-         "SelectedOption": "English"],
-        ["SettingName": "Profile Visibility",
-         "SettingOptions": ["Private", "Public"],
-         "SelectedOption": "Private"],
-        ["SettingName": "Receive Notifications",
-         "SettingOptions": ["Yes", "No"],
-         "SelectedOption": "No"],
-        ["SettingName": "Share Location",
-         "SettingOptions": ["Yes", "No"],
-         "SelectedOption": "No"],
-        ["SettingName": "Information Pages",
-         "SettingOptions": ["Terms and Conditions", "Privacy Policy"],
-         "HasDisclosureIndicator": true]
-    ]
+    private let modelController = SettingsModelController()
     
     private var settingsTableView: UITableView!
             
@@ -61,12 +45,12 @@ class SettingsViewController: UIViewController {
 extension SettingsViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return settingItems?.count ?? 0
+        return modelController.settingItems?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
-        if let settingItem = settingItems?[section],
+        if let settingItem = modelController.settingItems?[section],
             let settingOptions = settingItem["SettingOptions"] as? [String] {
             return settingOptions.count
         }
@@ -78,7 +62,7 @@ extension SettingsViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
         cell.selectionStyle = .none
         cell.accessoryType = .none
-        if let settingItem = settingItems?[indexPath.section],
+        if let settingItem = modelController.settingItems?[indexPath.section],
             let settingOptions = settingItem["SettingOptions"] as? [String] {
             cell.textLabel?.text = settingOptions[indexPath.row]
             // Verify if current Section can contain a Checkmarked row
@@ -101,7 +85,7 @@ extension SettingsViewController: UITableViewDataSource {
 extension SettingsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    titleForHeaderInSection section: Int) -> String? {
-        if let settingItem = settingItems?[section],
+        if let settingItem = modelController.settingItems?[section],
             let settingName = settingItem["SettingName"] as? String {
             return settingName
         }
@@ -111,14 +95,15 @@ extension SettingsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if let settingItem = settingItems?[indexPath.section],
+        if let settingItem = modelController.settingItems?[indexPath.section],
            let settingOptions = settingItem["SettingOptions"] as? [String] {
            if settingItem["HasDisclosureIndicator"] as? Bool ?? false {
                // No need to reload table view, since cells should not be updated
                print("Navigate to a new View(Controller) to display \(settingOptions[indexPath.row])")
            } else {
                // Update Model's data, then update UI to reflect latest Model changes
-               settingItems?[indexPath.section]["SelectedOption"] = settingOptions[indexPath.row]
+            modelController.updateSelectedOptionFor(section: indexPath.section,
+                                                    optionIndex: indexPath.row)
                tableView.reloadData()
            }
         }

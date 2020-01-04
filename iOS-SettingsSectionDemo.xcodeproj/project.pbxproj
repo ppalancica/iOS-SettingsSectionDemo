@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B43B636A23C03AF900EF2FF6 /* SettingsModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43B636923C03AF900EF2FF6 /* SettingsModelController.swift */; };
+		B43B636C23C03CFF00EF2FF6 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43B636B23C03CFF00EF2FF6 /* RootViewController.swift */; };
 		B49DB91123BEFFEA0018E029 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49DB91023BEFFEA0018E029 /* AppDelegate.swift */; };
 		B49DB91323BEFFEA0018E029 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49DB91223BEFFEA0018E029 /* SceneDelegate.swift */; };
 		B49DB91523BEFFEA0018E029 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49DB91423BEFFEA0018E029 /* SettingsViewController.swift */; };
@@ -16,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B43B636923C03AF900EF2FF6 /* SettingsModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModelController.swift; sourceTree = "<group>"; };
+		B43B636B23C03CFF00EF2FF6 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		B49DB90D23BEFFEA0018E029 /* iOS-SettingsSectionDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS-SettingsSectionDemo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B49DB91023BEFFEA0018E029 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B49DB91223BEFFEA0018E029 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +63,8 @@
 				B49DB91023BEFFEA0018E029 /* AppDelegate.swift */,
 				B49DB91223BEFFEA0018E029 /* SceneDelegate.swift */,
 				B49DB91423BEFFEA0018E029 /* SettingsViewController.swift */,
+				B43B636923C03AF900EF2FF6 /* SettingsModelController.swift */,
+				B43B636B23C03CFF00EF2FF6 /* RootViewController.swift */,
 				B49DB91623BEFFEA0018E029 /* Main.storyboard */,
 				B49DB91923BEFFEF0018E029 /* Assets.xcassets */,
 				B49DB91B23BEFFEF0018E029 /* LaunchScreen.storyboard */,
@@ -138,8 +144,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B43B636C23C03CFF00EF2FF6 /* RootViewController.swift in Sources */,
 				B49DB91523BEFFEA0018E029 /* SettingsViewController.swift in Sources */,
 				B49DB91123BEFFEA0018E029 /* AppDelegate.swift in Sources */,
+				B43B636A23C03AF900EF2FF6 /* SettingsModelController.swift in Sources */,
 				B49DB91323BEFFEA0018E029 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
