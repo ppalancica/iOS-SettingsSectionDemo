@@ -45,16 +45,12 @@ class SettingsViewController: UIViewController {
 extension SettingsViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return modelController.settingItems?.count ?? 0
+        return modelController.numberOfSettings()
     }
     
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
-        if let settingItem = modelController.settingItems?[section],
-            let settingOptions = settingItem["SettingOptions"] as? [String] {
-            return settingOptions.count
-        }
-        return 0
+        return modelController.numberOfOptionsInSection(section: section)
     }
     
     func tableView(_ tableView: UITableView,
@@ -62,19 +58,13 @@ extension SettingsViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
         cell.selectionStyle = .none
         cell.accessoryType = .none
-        if let settingItem = modelController.settingItems?[indexPath.section],
-            let settingOptions = settingItem["SettingOptions"] as? [String] {
-            cell.textLabel?.text = settingOptions[indexPath.row]
-            // Verify if current Section can contain a Checkmarked row
-            if let selectedOption = settingItem["SelectedOption"] as? String {
-                if settingOptions.firstIndex(of: selectedOption) == indexPath.row {
-                    cell.accessoryType = .checkmark
-                }
-            }
-            // Verify if current Section should display Disclosure Indicator icons on its rows
-            else if settingItem["HasDisclosureIndicator"] as? Bool ?? false {
-                cell.accessoryType = .disclosureIndicator
-            }
+        if let settingOption = modelController.settingOptionFor(indexPath: indexPath) {
+            cell.textLabel?.text = settingOption
+        }
+        if modelController.isSelectedOptionAt(indexPath: indexPath) {
+            cell.accessoryType = .checkmark
+        } else if modelController.isInfoPageOptionAt(indexPath: indexPath) {
+            cell.accessoryType = .disclosureIndicator
         }
         return cell
     }
@@ -83,29 +73,25 @@ extension SettingsViewController: UITableViewDataSource {
 // MARK: UITableViewDelegate methods
 
 extension SettingsViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView,
                    titleForHeaderInSection section: Int) -> String? {
-        if let settingItem = modelController.settingItems?[section],
-            let settingName = settingItem["SettingName"] as? String {
-            return settingName
-        }
-        return nil
+        return modelController.settingNameForSection(section: section)
     }
     
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if let settingItem = modelController.settingItems?[indexPath.section],
-            let settingOptions = settingItem["SettingOptions"] as? [String] {
-            if settingItem["HasDisclosureIndicator"] as? Bool ?? false {
-                // No need to reload table view, since cells should not be updated
-                print("Navigate to a new View(Controller) to display \(settingOptions[indexPath.row])")
-            } else {
-                // Update Model's data, then update UI to reflect latest Model changes
-                modelController.updateSelectedOptionFor(section: indexPath.section,
-                                                        optionIndex: indexPath.row)
-                tableView.reloadData()
-           }
+        if modelController.isInfoPageOptionAt(indexPath: indexPath) {
+            // No need to reload table view, since cells should not be updated
+            if let settingName = modelController.settingNameForSection(section: indexPath.row) {
+                print("Navigate to a new View(Controller) to display \(settingName)")
+            }
+        } else {
+            // Update Model's data, then update UI to reflect latest Model changes
+            modelController.updateSelectedOptionFor(section: indexPath.section,
+                                                    optionIndex: indexPath.row)
+            tableView.reloadData()
         }
     }
 }
