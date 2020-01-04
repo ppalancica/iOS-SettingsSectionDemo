@@ -64,7 +64,8 @@ extension ViewController: UITableViewDataSource {
         return settingItems?.count ?? 0
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
         if let settingItem = settingItems?[section],
             let settingOptions = settingItem["SettingOptions"] as? [String] {
             return settingOptions.count
@@ -72,7 +73,8 @@ extension ViewController: UITableViewDataSource {
         return 0
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
         cell.selectionStyle = .none
         cell.accessoryType = .none
@@ -97,11 +99,28 @@ extension ViewController: UITableViewDataSource {
 // MARK: UITableViewDelegate methods
 
 extension ViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView,
+                   titleForHeaderInSection section: Int) -> String? {
         if let settingItem = settingItems?[section],
             let settingName = settingItem["SettingName"] as? String {
             return settingName
         }
         return nil
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        if let settingItem = settingItems?[indexPath.section],
+           let settingOptions = settingItem["SettingOptions"] as? [String] {
+           if settingItem["HasDisclosureIndicator"] as? Bool ?? false {
+               // No need to reload table view, since cells should not be updated
+               print("Navigate to a new View(Controller) to display \(settingOptions[indexPath.row])")
+           } else {
+               // Update Model's data, then update UI to reflect latest Model changes
+               settingItems?[indexPath.section]["SelectedOption"] = settingOptions[indexPath.row]
+               tableView.reloadData()
+           }
+        }
     }
 }
