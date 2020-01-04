@@ -78,6 +78,8 @@ extension ViewController: UITableViewDataSource {
     }
 }
 
+// MARK: UITableViewDelegate methods
+
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if let settingItem = settingItems?[section],
