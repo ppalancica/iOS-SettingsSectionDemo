@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  SettingsViewController.swift
 //  iOS-SettingsSectionDemo
 //
 //  Created by Pavel Palancica on 1/2/20.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class SettingsViewController: UIViewController {
     
     private var settingItems: [[String: Any]]? = [
         ["SettingName": "Display Language",
@@ -58,7 +58,7 @@ class ViewController: UIViewController {
 
 // MARK: UITableViewDataSource methods
 
-extension ViewController: UITableViewDataSource {
+extension SettingsViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return settingItems?.count ?? 0
@@ -98,7 +98,7 @@ extension ViewController: UITableViewDataSource {
 
 // MARK: UITableViewDelegate methods
 
-extension ViewController: UITableViewDelegate {
+extension SettingsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    titleForHeaderInSection section: Int) -> String? {
         if let settingItem = settingItems?[section],
