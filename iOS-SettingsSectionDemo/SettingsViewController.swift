@@ -96,15 +96,15 @@ extension SettingsViewController: UITableViewDelegate {
                    didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if let settingItem = modelController.settingItems?[indexPath.section],
-           let settingOptions = settingItem["SettingOptions"] as? [String] {
-           if settingItem["HasDisclosureIndicator"] as? Bool ?? false {
-               // No need to reload table view, since cells should not be updated
-               print("Navigate to a new View(Controller) to display \(settingOptions[indexPath.row])")
-           } else {
-               // Update Model's data, then update UI to reflect latest Model changes
-            modelController.updateSelectedOptionFor(section: indexPath.section,
-                                                    optionIndex: indexPath.row)
-               tableView.reloadData()
+            let settingOptions = settingItem["SettingOptions"] as? [String] {
+            if settingItem["HasDisclosureIndicator"] as? Bool ?? false {
+                // No need to reload table view, since cells should not be updated
+                print("Navigate to a new View(Controller) to display \(settingOptions[indexPath.row])")
+            } else {
+                // Update Model's data, then update UI to reflect latest Model changes
+                modelController.updateSelectedOptionFor(section: indexPath.section,
+                                                        optionIndex: indexPath.row)
+                tableView.reloadData()
            }
         }
     }
